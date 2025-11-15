@@ -4,7 +4,10 @@ import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
 
+
+
 import { getEnvVar } from './utils/getEnvVar.js';
+import { getAllNannyes, getNannyById } from './services/nannyes.js';
 
 const PORT = Number(getEnvVar('PORT', '3000'));
 
@@ -14,6 +17,7 @@ export const startServer = () => {
   app.use(express.json());
   app.use(cors());
 
+
   app.use(
     pino({
       transport: {
@@ -22,11 +26,33 @@ export const startServer = () => {
     }),
   );
 
-  app.get('/', (req, res) => {
-    res.json({
-      message: 'Hello World!',
+  app.get('/nannys', async (req, res) => {
+ const nannyes = await getAllNannyes();
+
+    res.status(200).json({
+      data: nannyes,
     });
   });
+
+  app.get('/nannys/:nannyId', async (req, res) => {
+
+        const { nannyId } = req.params;
+    const nanny = await getNannyById(nannyId);
+
+    // Відповідь, якщо контакт не знайдено
+	if (!nanny) {
+	  res.status(404).json({
+		  message: 'Nanny not found'
+	  });
+	  return;
+	}
+
+	// Відповідь, якщо контакт знайдено
+    res.status(200).json({
+      data: nanny,
+    });
+
+});
 
      app.use((req, res, next) => {
        // If no route was matched, send 404
