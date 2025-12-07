@@ -1,8 +1,22 @@
 import createHttpError from "http-errors";
-import { createNanny, deleteNanny, getAllNannyes, getNannyById } from "../services/nannyes.js";
+import { createNanny, deleteNanny, getAllNannyes, getNannyById, updateNanny } from "../services/nannyes.js";
+import { parseFilterParams } from "../utils/parseFilterParams.js";
+import { parsePaginationParam } from "../utils/parsePagination.js";
+import { parseSortParams } from "../utils/parseSort.js";
 
 export const getNannyesController = async (req, res, next) => {
-    const nannyes = await getAllNannyes();
+
+    const { page, perPage } = parsePaginationParam(req.query);
+  const { sortBy, sortOrder } = parseSortParams(req.query);
+  const filter = parseFilterParams(req.query);
+
+    const nannyes = await getAllNannyes({
+    page,
+    perPage,
+    sortBy,
+    sortOrder,
+    filter,
+  });
 
       res.json({
     status: 200,
@@ -50,4 +64,43 @@ export const DeleteNannyController = async (req, res, next) => {
     return;
   }
   res.status(204).send();
+};
+
+export const UpsertNannyController = async (req, res, next) => {
+  const {nannyId} = req.params;
+  const result = await updateNanny(nannyId, req.body, {
+    upsert: true,
+  });
+
+  if (!result) {
+    next(createHttpError(404, 'Nanny not found'));
+    return;
+  }
+
+  const status = result.isNew ? 201 : 200;
+
+  res.status(status).json({
+    status,
+    message: `Successfully upserted a nanny!`,
+    data: result.nanny,
+  });
+};
+
+
+export const PatchNannyController = async (req, res, next) => {
+ const {nannyId} = req.params;
+  const result = await updateNanny(nannyId, req.body);
+
+  if (!result) {
+    next(createHttpError(404, 'Nanny not found'));
+    return;
+  }
+
+  const status = result.isNew ? 201 : 200;
+
+  res.status(status).json({
+    status: 200,
+    message: `Successfully patched a nanny!`,
+    data: result.nanny,
+  });
 };
