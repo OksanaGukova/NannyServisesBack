@@ -1,0 +1,27 @@
+"filename", "language", "JavaScript", "JSON", "comment", "blank", "total"
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\.prettierrc", "JSON", 0, 6, 0, 1, 7
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\eslint.config.mjs", "JavaScript", 14, 0, 0, 4, 18
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\package-lock.json", "JSON", 0, 2793, 0, 1, 2794
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\package.json", "JSON", 0, 40, 0, 1, 41
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\src\constans\SORT_ORDER.js", "JavaScript", 4, 0, 0, 1, 5
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\src\controllers\nannyes.js", "JavaScript", 81, 0, 1, 25, 107
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\src\db\initMongoDB.js", "JavaScript", 17, 0, 0, 5, 22
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\src\db\models\nanny.js", "JavaScript", 72, 0, 0, 5, 77
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\src\index.js", "JavaScript", 7, 0, 0, 3, 10
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\src\middlewares\errorHandler.js", "JavaScript", 13, 0, 0, 3, 16
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\src\middlewares\isValidId.js", "JavaScript", 9, 0, 0, 3, 12
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\src\middlewares\notFoundHandler.js", "JavaScript", 7, 0, 0, 2, 9
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\src\middlewares\validateBody.js", "JavaScript", 20, 0, 0, 4, 24
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\src\routers\nannyes.js", "JavaScript", 15, 0, 0, 9, 24
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\src\server.js", "JavaScript", 26, 0, 1, 15, 42
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\src\services\nannyes.js", "JavaScript", 83, 0, 0, 18, 101
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\src\utils\calculatePaginationData.js", "JavaScript", 13, 0, 0, 2, 15
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\src\utils\ctrlWrapper.js", "JavaScript", 9, 0, 0, 1, 10
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\src\utils\getEnvVar.js", "JavaScript", 8, 0, 0, 6, 14
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\src\utils\parseFilterParams.js", "JavaScript", 14, 0, 0, 4, 18
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\src\utils\parsePagination.js", "JavaScript", 14, 0, 0, 4, 18
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\src\utils\parseSort.js", "JavaScript", 35, 0, 0, 10, 45
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\src\validations\nanny.create.schema.js", "JavaScript", 16, 0, 0, 14, 30
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\src\validations\nanny.update.schema.js", "JavaScript", 17, 0, 0, 13, 30
+"c:\Users\oksan\OneDrive\Робочий стіл\react\NannyServisesBack\src\validations\review.schema.js", "JavaScript", 6, 0, 0, 2, 8
+"Total", "-", 500, 2839, 2, 156, 3497
