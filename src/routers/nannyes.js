@@ -5,19 +5,24 @@ import { createNannySchema } from "../validations/nanny.create.schema.js";
 import { validateBody } from "../middlewares/validateBody.js";
 import { updateNannySchema } from "../validations/nanny.update.schema.js";
 import { isValidId } from "../middlewares/isValidId.js";
+import { authenticate } from "../middlewares/authenticate.js";
 
 const router = Router();
 
-router.get('/nannys', ctrlWrapper(getNannyesController));
+  router.use(authenticate);
 
-  router.get('/nannys/:nannyId', isValidId, ctrlWrapper(getNannyByIdController));
+router.get('/', ctrlWrapper(getNannyesController));
 
-  router.post('/nannys', validateBody(createNannySchema), ctrlWrapper(createNannyController));
+  router.get('/:nannyId', isValidId, ctrlWrapper(getNannyByIdController));
 
-    router.delete('/nannys/:nannyId',isValidId, ctrlWrapper(DeleteNannyController));
+  router.post('/', validateBody(createNannySchema), ctrlWrapper(createNannyController));
 
-    router.put('/nannys/:nannyId',validateBody(updateNannySchema), isValidId, ctrlWrapper(UpsertNannyController));
+    router.delete('/:nannyId',isValidId, ctrlWrapper(DeleteNannyController));
 
-        router.patch('/nannys/:nannyId',validateBody(updateNannySchema), isValidId, ctrlWrapper(PatchNannyController));
+    router.put('/:nannyId',validateBody(updateNannySchema), isValidId, ctrlWrapper(UpsertNannyController));
+
+        router.patch('/:nannyId',validateBody(updateNannySchema), isValidId, ctrlWrapper(PatchNannyController));
+
+
 
 export default router;

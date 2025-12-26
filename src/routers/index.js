@@ -4,7 +4,7 @@ import authRouter from './auth.js';
 
 const router = Router();
 
-router.use('/nannyes', nannyesRouter);
+router.use('/nannys', nannyesRouter);
 router.use('/auth', authRouter);
 
 export default router;
