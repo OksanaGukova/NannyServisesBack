@@ -45,7 +45,10 @@ export const getNannyesController = async (req, res, next) => {
 
 
 export const createNannyController = async (req, res) => {
- const nanny = await createNanny(req.body);
+ const nanny = await createNanny({
+    ...req.body,
+    parentId: req.user._id, // 🔥 ОЦЕ КЛЮЧ
+  });
 
   res.status(201).json({
     status: 201,

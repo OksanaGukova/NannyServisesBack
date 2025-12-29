@@ -65,6 +65,10 @@ const nannyesSchema = new Schema(
       type: Number,
       required: true,
     },
+      parentId: { 
+      type: Schema.Types.ObjectId,
+      ref: 'users'
+    },
   },
   {
     timestamps: true,

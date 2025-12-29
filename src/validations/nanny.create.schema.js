@@ -1,5 +1,6 @@
 import Joi from "joi";
 import { reviewJoiSchema } from "./review.schema.js";
+import { isValidObjectId } from "mongoose";
 
 
 export const createNannySchema = Joi.object({
@@ -26,4 +27,11 @@ export const createNannySchema = Joi.object({
   characters: Joi.array().items(Joi.string()).min(1).required(),
 
   rating: Joi.number().min(1).max(5).required(),
+
+    parentId: Joi.string().custom((value, helper) => {
+		    if (value && !isValidObjectId(value)) {
+		      return helper.message('Parent id should be a valid mongo id');
+		    }
+		    return true;
+		 }),
 });
