@@ -3,6 +3,7 @@ import { createNanny, deleteNanny, getAllNannyes, getNannyById, updateNanny } fr
 import { parseFilterParams } from "../utils/parseFilterParams.js";
 import { parsePaginationParam } from "../utils/parsePagination.js";
 import { parseSortParams } from "../utils/parseSort.js";
+import { saveFileToUploadDir } from "../utils/saveFileToUploadDir.js";
 
 export const getNannyesController = async (req, res, next) => {
 
@@ -92,7 +93,17 @@ export const UpsertNannyController = async (req, res, next) => {
 
 export const PatchNannyController = async (req, res, next) => {
  const {nannyId} = req.params;
-  const result = await updateNanny(nannyId, req.body);
+   const photo = req.file;
+    let photoUrl;
+
+  if (photo) {
+    photoUrl = await saveFileToUploadDir(photo);
+  }
+
+  const result = await updateNanny(nannyId, {
+    ...req.body,
+    photo: photoUrl,
+  });
 
   if (!result) {
     next(createHttpError(404, 'Nanny not found'));
