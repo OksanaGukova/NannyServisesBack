@@ -4,6 +4,8 @@ import { parseFilterParams } from "../utils/parseFilterParams.js";
 import { parsePaginationParam } from "../utils/parsePagination.js";
 import { parseSortParams } from "../utils/parseSort.js";
 import { saveFileToUploadDir } from "../utils/saveFileToUploadDir.js";
+import { getEnvVar } from "../utils/getEnvVar.js";
+import { saveFileToCloudinary } from "../utils/saveFileToCloudinary.js";
 
 export const getNannyesController = async (req, res, next) => {
 
@@ -96,8 +98,12 @@ export const PatchNannyController = async (req, res, next) => {
    const photo = req.file;
     let photoUrl;
 
-  if (photo) {
-    photoUrl = await saveFileToUploadDir(photo);
+ if (photo) {
+    if (getEnvVar('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
   }
 
   const result = await updateNanny(nannyId, {
