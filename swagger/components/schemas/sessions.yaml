@@ -1,0 +1,45 @@
+
+      type: object
+      required:
+        - userId
+        - accessToken
+        - refreshToken
+        - accessTokenValidUntil
+        - refreshTokenValidUntil
+      properties:
+        _id:
+          type: string
+          example: "65a1f2e9c8b4a6f123456789"
+
+        userId:
+          type: string
+          description: ID of the user
+          example: "6952b73f8fb84a3956fd7f82"
+
+        accessToken:
+          type: string
+          example: "OK3sYhfsV1Z2hsrbnGMHuYgaOcjkB5aXhZtN9oDk"
+
+        refreshToken:
+          type: string
+          example: "JHdk82ksjDks92jdks92jdks"
+
+        accessTokenValidUntil:
+          type: string
+          format: date-time
+          example: "2026-01-17T18:45:00.000Z"
+
+        refreshTokenValidUntil:
+          type: string
+          format: date-time
+          example: "2026-01-18T18:30:00.000Z"
+
+        createdAt:
+          type: string
+          format: date-time
+          example: "2026-01-17T18:30:00.000Z"
+
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2026-01-17T18:30:00.000Z"

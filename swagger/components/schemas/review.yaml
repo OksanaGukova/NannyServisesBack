@@ -1,0 +1,18 @@
+
+      type: object
+      required:
+        - reviewer
+        - rating
+        - comment
+      properties:
+        reviewer:
+          type: string
+          example: Maria Ivanova
+
+        rating:
+          type: number
+          example: 5
+
+        comment:
+          type: string
+          example: Very good nanny, my child loved her

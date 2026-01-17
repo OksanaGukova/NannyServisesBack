@@ -1,0 +1,37 @@
+
+      type: object
+      required:
+        - _id
+        - name
+        - email
+        - role
+      properties:
+        _id:
+          type: string
+          example: "6952b73f8fb84a3956fd7f82"
+
+        name:
+          type: string
+          example: "Oksana 123"
+
+        email:
+          type: string
+          format: email
+          example: "oksana@gmail.com"
+
+        role:
+          type: string
+          enum:
+            - nanny
+            - parent
+          example: parent
+
+        createdAt:
+          type: string
+          format: date-time
+          example: "2025-12-29T17:15:43.574Z"
+
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2025-12-29T17:15:43.574Z"

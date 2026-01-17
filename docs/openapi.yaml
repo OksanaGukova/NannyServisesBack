@@ -1,0 +1,60 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Nannues app
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  description:
+    This is a documentation of nannues app
+tags:
+  - name: Nanny
+    description: Operations about users.
+  - name: Auth
+    description: Auth operations.
+servers:
+  - url: http://localhost:3000
+  - url: https://example.com/api/v1
+paths:
+   /nannues:
+    get:
+      $ref: ../swagger/paths/nannyes/get.yaml
+    post:
+      $ref: ../swagger/paths/nannyes/post.yaml
+      /nannues/{id}:
+    get:
+      $ref: ../swagger/paths/nannyes/{id}/get.yaml
+    patch:
+      $ref: ../swagger/paths/nannyes/{id}/patch.yaml
+    delete:
+      $ref: ../swagger/paths/nannyes/{id}/delete.yaml
+      /auth/register:
+    post:
+      $ref: ../swagger/paths/auth/register.yaml
+      /auth/login:
+    post:
+      $ref: ../swagger/paths/auth/login.yaml
+      /auth/refresh:
+    post:
+      $ref: ../swagger/paths/auth/refresh.yaml
+      /auth/logout:
+    post:
+      $ref: ../swagger/paths/auth/logout.yaml
+      /auth/send-reset-email:
+    post:
+      $ref: ../swagger/paths/auth/sendEmail.yaml
+      /auth/reset-pwd:
+    post:
+      $ref: ../swagger/paths/auth/resetPassword.yaml
+      /auth/get-oauth-url:
+    get:
+      $ref: ../swagger/paths/auth/getOauthUrl.yaml
+      /auth/confirm-oauth:
+    post:
+      $ref: ../swagger/paths/auth/confirmOauth.yaml
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

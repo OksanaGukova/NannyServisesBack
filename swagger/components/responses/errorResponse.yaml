@@ -1,0 +1,50 @@
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: "Validation error"
+
+    AuthSuccessResponse:
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: "Successfully logged in"
+        data:
+          type: object
+          properties:
+            accessToken:
+              type: string
+              example: "OK3sYhfsV1Z2hsrbnGMHuYgaOcjkB5aXhZtN9oDk"
+
+    EmptySuccessResponse:
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: "Operation successful"
+        data:
+          type: object
+          example: {}
