@@ -1,0 +1,106 @@
+get:
+  tags:
+    - Nannyes
+  summary: Get list of nannyes
+  description: Returns a paginated list of nannyes with filtering and sorting
+  security:
+    - bearerAuth: []
+  parameters:
+    - in: query
+      name: page
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number
+
+    - in: query
+      name: perPage
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+      description: Number of items per page
+
+    - in: query
+      name: sortBy
+      schema:
+        type: string
+        default: _id
+      description: Field to sort by
+
+    - in: query
+      name: sortOrder
+      schema:
+        type: integer
+        enum: [1, -1]
+        default: 1
+      description: Sort order (1 = ASC, -1 = DESC)
+
+    - in: query
+      name: minPrice
+      schema:
+        type: number
+      description: Minimum price per hour
+
+    - in: query
+      name: maxPrice
+      schema:
+        type: number
+      description: Maximum price per hour
+
+    - in: query
+      name: minRating
+      schema:
+        type: number
+        minimum: 0
+        maximum: 5
+      description: Minimum rating
+
+    - in: query
+      name: maxRating
+      schema:
+        type: number
+        minimum: 0
+        maximum: 5
+      description: Maximum rating
+
+  responses:
+    '200':
+      description: Successfully retrieved nannyes list
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              page:
+                type: integer
+                example: 1
+              perPage:
+                type: integer
+                example: 10
+              totalItems:
+                type: integer
+                example: 42
+              totalPages:
+                type: integer
+                example: 5
+              hasNextPage:
+                type: boolean
+                example: true
+              hasPreviousPage:
+                type: boolean
+                example: false
+              data:
+                type: array
+                items:
+                  $ref: '../../components/schemas/nanny.yaml'
+  '401':
+   $ref: '../../components/responses/401.yaml'
+  '403':
+    $ref: '../../components/responses/403.yaml'
+  '404':
+    $ref: '../../components/responses/404.yaml'
+  '500':
+    $ref: '../../components/responses/500.yaml'

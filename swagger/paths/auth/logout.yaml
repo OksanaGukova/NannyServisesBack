@@ -1,0 +1,14 @@
+tags:
+  - Users
+summary: Logout a user
+operationId: logoutUser
+description: 'logoutUser'
+security:
+  - bearerAuth: []
+responses:
+  '204':
+     description: Contact deleted successfully
+  '401':
+     $ref: '../../components/responses/401.yaml'
+  '500':
+    $ref: '../../components/responses/500.yaml'

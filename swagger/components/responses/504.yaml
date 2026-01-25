@@ -1,0 +1,15 @@
+description: Gateway Timeout - The server did not receive a timely response from an upstream server.
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 504
+        message:
+          type: string
+          example: Gateway Timeout
+        error:
+          type: string
+          example: Upstream service timeout

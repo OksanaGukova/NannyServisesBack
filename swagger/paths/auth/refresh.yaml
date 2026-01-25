@@ -1,0 +1,57 @@
+tags:
+  - Auth
+summary: Refresh access token
+operationId: refreshToken
+description: 'Refresh the access token using the sessionId and refreshToken.'
+security:
+    - bearerAuth: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - sessionId
+          - refreshToken
+        properties:
+          sessionId:
+            description: "Session ID"
+            type: string
+            example: '60d5f2b5e5f1a534d08f7bd2'
+          refreshToken:
+            description: "Refresh token"
+            type: string
+            example: 'your_refresh_token_here'
+responses:
+  '200':
+    description: Successfully refreshed a session!
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully refreshed a session!
+            data:
+              type: object
+              properties:
+                accessToken:
+                  type: string
+                  example: 'new_access_token_here'
+  '400':
+    $ref: '../../components/responses/400.yaml'
+  '401':
+    $ref: '../../components/responses/401.yaml'
+  '403':
+    $ref: '../../components/responses/403.yaml'
+  '404':
+    $ref: '../../components/responses/404.yaml'
+  '422':
+    $ref: '../../components/responses/422.yaml'
+  '500':
+    $ref: '../../components/responses/500.yaml'

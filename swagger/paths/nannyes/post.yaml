@@ -1,0 +1,113 @@
+post:
+  tags:
+    - Nannyes
+  summary: Create nanny
+  description: Create a new nanny profile (only for users with role NANNY)
+  security:
+    - bearerAuth: []
+
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - name
+            - avatar_url
+            - birthday
+            - experience
+            - reviews
+            - education
+            - kids_age
+            - price_per_hour
+            - location
+            - about
+            - characters
+            - rating
+          properties:
+            name:
+              type: string
+              example: Anna Kovalenko
+
+            avatar_url:
+              type: string
+              format: uri
+              example: https://example.com/avatar.jpg
+
+            birthday:
+              type: string
+              format: date
+              example: 1990-05-12
+
+            experience:
+              type: string
+              example: 5 years working with children
+
+            reviews:
+              type: array
+              items:
+                $ref: './review.yaml'
+
+            education:
+              type: string
+              example: Pedagogical University
+
+            kids_age:
+              type: string
+              example: 1-3, 4-6
+
+            price_per_hour:
+              type: number
+              example: 15
+
+            location:
+              type: string
+              example: Kyiv
+
+            about:
+              type: string
+              example: Caring and responsible nanny
+
+            characters:
+              type: array
+              items:
+                type: string
+              example:
+                - kind
+                - patient
+                - responsible
+
+            rating:
+              type: number
+              example: 4.8
+
+            photo:
+              type: string
+              format: uri
+              example: https://example.com/photo.jpg
+
+  responses:
+    '201':
+      description: Successfully created nanny
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 201
+              message:
+                type: string
+                example: Successfully created a nanny!
+              data:
+                $ref: '../../components/schemas/nanny.yaml'
+  '401':
+   $ref: '../../components/responses/401.yaml'
+  '403':
+    $ref: '../../components/responses/403.yaml'
+  '404':
+    $ref: '../../components/responses/404.yaml'
+  '500':
+    $ref: '../../components/responses/500.yaml'

@@ -1,0 +1,58 @@
+tags:
+  - Auth
+summary: Log in or sign up via Google OAuth
+operationId: loginWithGoogle
+description: 'Log in or sign up a user using Google OAuth code. Creates a new user if not already registered and returns an access token.'
+security: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - code
+        properties:
+          code:
+            description: "Google OAuth authorization code"
+            type: string
+            example: '4/0AX4XfWh9dL4...'
+responses:
+  '200':
+    description: Successfully logged in or signed up via Google OAuth
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully logged in via Google OAuth!
+            data:
+              type: object
+              properties:
+                accessToken:
+                  type: string
+                  description: 'Access token for the authenticated user session'
+                  example: 'eyJhbGciOiJIUzI1NiIsInR5cC...'
+  '400':
+    $ref: '../../components/responses/400.yaml'
+  '401':
+    $ref: '../../components/responses/401.yaml'
+  '403':
+    $ref: '../../components/responses/403.yaml'
+  '422':
+    $ref: '../../components/responses/422.yaml'
+  '500':
+    $ref: '../../components/responses/500.yaml'
+  '502':
+    $ref: '../../components/responses/502.yaml'
+  '504':
+    $ref: '../../components/responses/504.yaml'

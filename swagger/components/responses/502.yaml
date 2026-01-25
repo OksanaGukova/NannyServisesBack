@@ -1,0 +1,15 @@
+description: Bad Gateway - The server received an invalid response from an upstream server.
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 502
+        message:
+          type: string
+          example: Bad Gateway
+        error:
+          type: string
+          example: Upstream service error

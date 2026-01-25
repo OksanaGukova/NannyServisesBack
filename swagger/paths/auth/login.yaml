@@ -1,0 +1,62 @@
+tags:
+  - Users
+summary: Login a user
+operationId: loginUser
+description: 'Log in a user and return access token along with setting refreshToken and sessionId in cookies.'
+security:
+  - bearerAuth: []
+requestBody:
+ required: true
+ content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - email
+          - password
+        properties:
+          email:
+            description: "User's email"
+            type: string
+            example: 'johndoe@example.com'
+          password:
+            description: "User's password"
+            type: string
+            example: 'Password123!'
+responses:
+  '200':
+    description: Login a user
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully logged in an user!
+            data:
+              type: object
+              properties:
+                session:
+                  $ref: '../../components/schemas/sessions.yaml'
+                user:
+                  $ref: '../../components/schemas/user.yaml'
+  '400':
+    $ref: '../../components/responses/400.yaml'
+  '401':
+    $ref: '../../components/responses/401.yaml'
+  '403':
+    $ref: '../../components/responses/403.yaml'
+  '404':
+    $ref: '../../components/responses/404.yaml'
+  '422':
+    $ref: '../../components/responses/422.yaml'
+  '500':
+    $ref: '../../components/responses/500.yaml'

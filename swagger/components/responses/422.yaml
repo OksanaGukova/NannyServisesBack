@@ -1,0 +1,15 @@
+description: Unprocessable Entity - The request was well-formed but contains semantic errors.
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 422
+        message:
+          type: string
+          example: Validation failed
+        error:
+          type: string
+          example: Invalid date format for birthday

@@ -29,3 +29,7 @@ export const CLOUDINARY = {
   API_KEY: 'API_KEY',
   API_SECRET: 'API_SECRET',
 };
+
+
+const LOGIN_ATTEMPT_THRESHOLD = 5;
+const ACCOUNT_LOCK_TIME_MS = 60 * 60 * 1000; // 1 год
