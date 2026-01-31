@@ -1,30 +1,75 @@
-tags:
-  - Users
-summary: Register a user
-operationId: registerUser
-description: 'Register a user'
-security:
+post:
+  tags:
+    - Users
+  summary: Register a user
+  operationId: registerUser
+  description: "Create a new user account (public). Returns created user (without sensitive fields)."
+  security:
   - bearerAuth: []
-responses:
-  '201':
-    description: Creates a contact
+  requestBody:
+    required: true
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - status
-            - message
-            - data
-          properties:
-            status:
-              type: integer
-              example: 201
-            message:
-              type: string
-              example: Successfully created a contact!
-            data:
-              type: object
-              $ref: '../../components/schemas/user.yaml'
-  '404':
-    $ref: '../../components/responses/404.yaml'
+          $ref: '../../components/schemas/registerUser.yaml'
+        examples:
+          signup:
+            summary: Example signup
+            value:
+              email: "user@example.com"
+              password: "Secret123!"
+              name: "Oksana"
+  responses:
+    '201':
+      description: User successfully created
+      headers:
+        Location:
+          description: URL of the newly created user resource
+          schema:
+            type: string
+            format: uri
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - status
+              - message
+              - data
+            properties:
+              status:
+                type: integer
+                example: 201
+              message:
+                type: string
+                example: Successfully registered a user!
+              data:
+                $ref: '../../components/schemas/user.yaml'
+          examples:
+            created:
+              value:
+                status: 201
+                message: "Successfully registered a user!"
+                data:
+                  id: "608d1f2b7b1e4b0015d4a1a2"
+                  email: "user@example.com"
+                  name: "Oksana"
+                  verified: false
+                  createdAt: "2026-01-31T12:00:00Z"
+    '400':
+      $ref: '../../components/responses/400.yaml'
+    '409':
+      description: Conflict — user with this email already exists
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/error.yaml'
+          examples:
+            conflict:
+              value:
+                status: 409
+                message: "User with this email already exists"
+    '422':
+      $ref: '../../components/responses/422.yaml'
+    '500':
+      $ref: '../../components/responses/500.yaml'

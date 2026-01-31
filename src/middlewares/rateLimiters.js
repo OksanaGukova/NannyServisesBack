@@ -6,6 +6,15 @@ import { getEnvVar } from '../utils/getEnvVar.js';
 // Redis client (налаштуйте REDIS_URL у .env)
 const redis = new Redis(getEnvVar('REDIS_URL'));
 
+
+redis.on('error', (err) => {
+  console.error('Redis error:', err.message);
+});
+
+redis.on('connect', () => {
+  console.log('Redis connected');
+});
+
 // Загальний ліміт для API (наприклад 100 запитів / 15 хв)
 export const apiRateLimiter = new RateLimiterRedis({
   storeClient: redis,

@@ -31,5 +31,5 @@ export const CLOUDINARY = {
 };
 
 
-const LOGIN_ATTEMPT_THRESHOLD = 5;
-const ACCOUNT_LOCK_TIME_MS = 60 * 60 * 1000; // 1 год
+export const LOGIN_ATTEMPT_THRESHOLD = 5;
+export const ACCOUNT_LOCK_TIME_MS = 60 * 60 * 1000; // 1 год

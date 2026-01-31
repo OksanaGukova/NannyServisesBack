@@ -3,7 +3,7 @@ import createHttpError from 'http-errors';
 import { randomBytes } from 'crypto';
 import { UsersCollection } from '../db/models/user.js';
 import { SessionsCollection } from '../db/models/session.js';
-import { FIFTEEN_MINUTES, ONE_DAY, SMTP, TEMPLATES_DIR} from '../constans/index.js';
+import { ACCOUNT_LOCK_TIME_MS, FIFTEEN_MINUTES, LOGIN_ATTEMPT_THRESHOLD, ONE_DAY, SMTP, TEMPLATES_DIR} from '../constans/index.js';
 import { getEnvVar } from '../utils/getEnvVar.js';
 import { sendEmail } from '../utils/sendMail.js';
 import jwt from 'jsonwebtoken';
@@ -26,15 +26,43 @@ export const registerUser = async (payload) => {
 
 export const loginUser = async (payload) => {
   const user = await UsersCollection.findOne({ email: payload.email });
-  if (!user) {
-    throw createHttpError(404, 'User not found');
+  // Не розкривати, що користувача нема — повертаємо загальну помилку
+  if (!user) throw createHttpError(401, 'Unauthorized');
+
+  // Якщо акаунт заблоковано
+  if (user.lockUntil && new Date() < new Date(user.lockUntil)) {
+    throw createHttpError(423, 'Account locked. Try later.');
   }
+
   const isEqual = await bcrypt.compare(payload.password, user.password);
 
   if (!isEqual) {
+    // Інкремент failedLoginAttempts
+    const newFailed = (user.failedLoginAttempts || 0) + 1;
+
+    if (newFailed >= LOGIN_ATTEMPT_THRESHOLD) {
+      // Досягли порогу — блокувати акаунт і скинути лічильник
+      await UsersCollection.updateOne(
+        { _id: user._id },
+        { $set: { lockUntil: new Date(Date.now() + ACCOUNT_LOCK_TIME_MS), failedLoginAttempts: 0 } },
+      );
+    } else {
+      await UsersCollection.updateOne(
+        { _id: user._id },
+        { $inc: { failedLoginAttempts: 1 } },
+      );
+    }
+
     throw createHttpError(401, 'Unauthorized');
   }
 
+  // Успішний логін — скидаємо лічильник та lockUntil
+  await UsersCollection.updateOne(
+    { _id: user._id },
+    { $set: { failedLoginAttempts: 0, lockUntil: null } },
+  );
+
+  // Очистити старі сесії і створити нову
   await SessionsCollection.deleteOne({ userId: user._id });
 
   const accessToken = randomBytes(30).toString('base64');
