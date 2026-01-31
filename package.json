@@ -49,6 +49,7 @@
     "multer": "^2.0.2",
     "nodemailer": "^7.0.12",
     "pino-http": "^11.0.0",
-    "rate-limiter-flexible": "^9.0.1"
+    "rate-limiter-flexible": "^9.0.1",
+    "webpack-cli": "^6.0.1"
   }
 }
