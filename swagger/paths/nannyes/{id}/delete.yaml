@@ -1,0 +1,26 @@
+delete:
+  tags:
+    - Nannyes
+  summary: Delete nanny
+  description: Deletes a nanny by ID
+  security:
+    - bearerAuth: []
+
+  parameters:
+    - in: path
+      name: nannyId
+      required: true
+      schema:
+        type: string
+      description: Nanny ID
+
+  responses:
+    '204':
+      description: Successfully deleted nanny
+
+    '401':
+      $ref: '../../components/responses/401.yaml'
+    '404':
+      $ref: '../../components/responses/404.yaml'
+    '500':
+      $ref: '../../components/responses/500.yaml'

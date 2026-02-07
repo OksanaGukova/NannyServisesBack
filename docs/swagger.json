@@ -1,0 +1,1581 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Nannyes App",
+    "description": "API documentation for Nannyes application",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local development server"
+    },
+    {
+      "url": "https://example.com/api/v1",
+      "description": "Production server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Nannyes",
+      "description": "Operations with nannyes"
+    },
+    {
+      "name": "Auth",
+      "description": "Authentication and authorization operations"
+    }
+  ],
+  "paths": {
+    "/nannyes": {
+      "get": {
+        "get": {
+          "401": {
+            "$ref": "../../components/responses/401.yaml"
+          },
+          "403": {
+            "$ref": "../../components/responses/403.yaml"
+          },
+          "404": {
+            "$ref": "../../components/responses/404.yaml"
+          },
+          "500": {
+            "$ref": "../../components/responses/500.yaml"
+          },
+          "tags": [
+            "Nannyes"
+          ],
+          "summary": "Get list of nannyes",
+          "description": "Returns a paginated list of nannyes with filtering and sorting",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "page",
+              "schema": {
+                "type": "integer",
+                "minimum": 1,
+                "default": 1
+              },
+              "description": "Page number"
+            },
+            {
+              "in": "query",
+              "name": "perPage",
+              "schema": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100,
+                "default": 10
+              },
+              "description": "Number of items per page"
+            },
+            {
+              "in": "query",
+              "name": "sortBy",
+              "schema": {
+                "type": "string",
+                "default": "_id"
+              },
+              "description": "Field to sort by"
+            },
+            {
+              "in": "query",
+              "name": "sortOrder",
+              "schema": {
+                "type": "integer",
+                "enum": [
+                  1,
+                  -1
+                ],
+                "default": 1
+              },
+              "description": "Sort order (1 = ASC, -1 = DESC)"
+            },
+            {
+              "in": "query",
+              "name": "minPrice",
+              "schema": {
+                "type": "number"
+              },
+              "description": "Minimum price per hour"
+            },
+            {
+              "in": "query",
+              "name": "maxPrice",
+              "schema": {
+                "type": "number"
+              },
+              "description": "Maximum price per hour"
+            },
+            {
+              "in": "query",
+              "name": "minRating",
+              "schema": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 5
+              },
+              "description": "Minimum rating"
+            },
+            {
+              "in": "query",
+              "name": "maxRating",
+              "schema": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 5
+              },
+              "description": "Maximum rating"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully retrieved nannyes list",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "page": {
+                        "type": "integer",
+                        "example": 1
+                      },
+                      "perPage": {
+                        "type": "integer",
+                        "example": 10
+                      },
+                      "totalItems": {
+                        "type": "integer",
+                        "example": 42
+                      },
+                      "totalPages": {
+                        "type": "integer",
+                        "example": 5
+                      },
+                      "hasNextPage": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "hasPreviousPage": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "../../components/schemas/nanny.yaml"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "post": {
+          "401": {
+            "$ref": "../../components/responses/401.yaml"
+          },
+          "403": {
+            "$ref": "../../components/responses/403.yaml"
+          },
+          "404": {
+            "$ref": "../../components/responses/404.yaml"
+          },
+          "500": {
+            "$ref": "../../components/responses/500.yaml"
+          },
+          "tags": [
+            "Nannyes"
+          ],
+          "summary": "Create nanny",
+          "description": "Create a new nanny profile (only for users with role NANNY)",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "name",
+                    "avatar_url",
+                    "birthday",
+                    "experience",
+                    "reviews",
+                    "education",
+                    "kids_age",
+                    "price_per_hour",
+                    "location",
+                    "about",
+                    "characters",
+                    "rating"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "Anna Kovalenko"
+                    },
+                    "avatar_url": {
+                      "type": "string",
+                      "format": "uri",
+                      "example": "https://example.com/avatar.jpg"
+                    },
+                    "birthday": {
+                      "type": "string",
+                      "format": "date",
+                      "example": "1990-05-12"
+                    },
+                    "experience": {
+                      "type": "string",
+                      "example": "5 years working with children"
+                    },
+                    "reviews": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "./review.yaml"
+                      }
+                    },
+                    "education": {
+                      "type": "string",
+                      "example": "Pedagogical University"
+                    },
+                    "kids_age": {
+                      "type": "string",
+                      "example": "1-3, 4-6"
+                    },
+                    "price_per_hour": {
+                      "type": "number",
+                      "example": 15
+                    },
+                    "location": {
+                      "type": "string",
+                      "example": "Kyiv"
+                    },
+                    "about": {
+                      "type": "string",
+                      "example": "Caring and responsible nanny"
+                    },
+                    "characters": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": [
+                        "kind",
+                        "patient",
+                        "responsible"
+                      ]
+                    },
+                    "rating": {
+                      "type": "number",
+                      "example": 4.8
+                    },
+                    "photo": {
+                      "type": "string",
+                      "format": "uri",
+                      "example": "https://example.com/photo.jpg"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Successfully created nanny",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "integer",
+                        "example": 201
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "Successfully created a nanny!"
+                      },
+                      "data": {
+                        "$ref": "../../components/schemas/nanny.yaml"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/nannyes/{nannyId}": {
+      "get": {
+        "tags": [
+          "Nannyes"
+        ],
+        "summary": "Get nanny by id",
+        "operationId": "getNanny",
+        "description": "Get nanny by id",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "65ca67e7ae7f10c88b598384"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get nanny by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found nanny with id 65ca67e7ae7f10c88b598384!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/nanny"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      },
+      "patch": {
+        "patch": {
+          "tags": [
+            "Nannyes"
+          ],
+          "summary": "Update nanny partially",
+          "description": "Updates nanny fields and optionally uploads a photo",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "nannyId",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Nanny ID"
+            }
+          ],
+          "requestBody": {
+            "required": false,
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "$ref": "../../components/schemas/nannyUpdate.yaml"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successfully patched nanny",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "integer",
+                        "example": 200
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "Successfully patched a nanny!"
+                      },
+                      "data": {
+                        "$ref": "../../components/schemas/nanny.yaml"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "$ref": "../../components/responses/401.yaml"
+            },
+            "404": {
+              "$ref": "../../components/responses/404.yaml"
+            },
+            "500": {
+              "$ref": "../../components/responses/500.yaml"
+            }
+          }
+        }
+      },
+      "delete": {
+        "delete": {
+          "tags": [
+            "Nannyes"
+          ],
+          "summary": "Delete nanny",
+          "description": "Deletes a nanny by ID",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "nannyId",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Nanny ID"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Successfully deleted nanny"
+            },
+            "401": {
+              "$ref": "../../components/responses/401.yaml"
+            },
+            "404": {
+              "$ref": "../../components/responses/404.yaml"
+            },
+            "500": {
+              "$ref": "../../components/responses/500.yaml"
+            }
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "post": {
+          "tags": [
+            "Users"
+          ],
+          "summary": "Register a user",
+          "operationId": "registerUser",
+          "description": "Create a new user account (public). Returns created user (without sensitive fields).",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "../../components/schemas/registerUser.yaml"
+                },
+                "examples": {
+                  "signup": {
+                    "summary": "Example signup",
+                    "value": {
+                      "email": "user@example.com",
+                      "password": "Secret123!",
+                      "name": "Oksana"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "User successfully created",
+              "headers": {
+                "Location": {
+                  "description": "URL of the newly created user resource",
+                  "schema": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "required": [
+                      "status",
+                      "message",
+                      "data"
+                    ],
+                    "properties": {
+                      "status": {
+                        "type": "integer",
+                        "example": 201
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "Successfully registered a user!"
+                      },
+                      "data": {
+                        "$ref": "../../components/schemas/user.yaml"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "created": {
+                      "value": {
+                        "status": 201,
+                        "message": "Successfully registered a user!",
+                        "data": {
+                          "id": "608d1f2b7b1e4b0015d4a1a2",
+                          "email": "user@example.com",
+                          "name": "Oksana",
+                          "verified": false,
+                          "createdAt": "2026-01-31T12:00:00Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "$ref": "../../components/responses/400.yaml"
+            },
+            "409": {
+              "description": "Conflict — user with this email already exists",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "../../components/schemas/error.yaml"
+                  },
+                  "examples": {
+                    "conflict": {
+                      "value": {
+                        "status": 409,
+                        "message": "User with this email already exists"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "422": {
+              "$ref": "../../components/responses/422.yaml"
+            },
+            "500": {
+              "$ref": "../../components/responses/500.yaml"
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Login a user",
+        "operationId": "loginUser",
+        "description": "Log in a user and return access token along with setting refreshToken and sessionId in cookies.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "description": "User's email",
+                    "type": "string",
+                    "example": "johndoe@example.com"
+                  },
+                  "password": {
+                    "description": "User's password",
+                    "type": "string",
+                    "example": "Password123!"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login a user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully logged in an user!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "session": {
+                          "$ref": "#/components/schemas/sessions"
+                        },
+                        "user": {
+                          "$ref": "#/components/schemas/user"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "422": {
+            "$ref": "#/components/responses/422"
+          },
+          "429": {
+            "$ref": "#/components/responses/429"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Refresh access token",
+        "operationId": "refreshToken",
+        "description": "Refresh the access token using the sessionId and refreshToken.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "sessionId",
+                  "refreshToken"
+                ],
+                "properties": {
+                  "sessionId": {
+                    "description": "Session ID",
+                    "type": "string",
+                    "example": "60d5f2b5e5f1a534d08f7bd2"
+                  },
+                  "refreshToken": {
+                    "description": "Refresh token",
+                    "type": "string",
+                    "example": "your_refresh_token_here"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully refreshed a session!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully refreshed a session!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "accessToken": {
+                          "type": "string",
+                          "example": "new_access_token_here"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "422": {
+            "$ref": "#/components/responses/422"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Logout a user",
+        "operationId": "logoutUser",
+        "description": "logoutUser",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Contact deleted successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/send-reset-email": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Request a password reset token",
+        "operationId": "requestResetEmail",
+        "description": "Request a password reset token to be sent to the user's email. Note - respond neutrally to avoid disclosing whether the email exists in the system.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/sessions"
+              },
+              "examples": {
+                "example": {
+                  "value": {
+                    "email": "johndoe@example.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reset password email has been successfully sent.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/sessions"
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "status": 200,
+                      "message": "If an account with that email exists, a reset link has been sent.",
+                      "data": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "422": {
+            "$ref": "#/components/responses/422"
+          },
+          "429": {
+            "$ref": "#/components/responses/429"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/reset-pwd": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Reset password",
+        "operationId": "resetPassword",
+        "description": "Reset password using a valid token and new password. The token is issued by the \"request-reset-email\" flow and must be provided in the request body.",
+        "security": null,
+        "bearerAuth": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "examples": {
+                "resetExample": {
+                  "summary": "Example reset request",
+                  "value": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                    "password": "NewStr0ngP@ss!"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password has been successfully reset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/sessions"
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "status": 200,
+                      "message": "Password has been successfully reset.",
+                      "data": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": "...",
+          "429": {
+            "$ref": "#/components/responses/429"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/get-oauth-url": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Get Google OAuth URL",
+        "operationId": "getGoogleOAuthUrl",
+        "description": "Generate and return the Google OAuth URL for user authentication.",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved Google OAuth URL",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully generated Google OAuth URL!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "example": "https://accounts.google.com/o/oauth2/auth?..."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "429": {
+            "$ref": "#/components/responses/429"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/confirm-oauth": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Log in or sign up via Google OAuth",
+        "operationId": "loginWithGoogle",
+        "description": "Log in or sign up a user using Google OAuth code. Creates a new user if not already registered and returns an access token.",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "code"
+                ],
+                "properties": {
+                  "code": {
+                    "description": "Google OAuth authorization code",
+                    "type": "string",
+                    "example": "4/0AX4XfWh9dL4..."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully logged in or signed up via Google OAuth",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully logged in via Google OAuth!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "accessToken": {
+                          "type": "string",
+                          "description": "Access token for the authenticated user session",
+                          "example": "eyJhbGciOiJIUzI1NiIsInR5cC..."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "422": {
+            "$ref": "#/components/responses/422"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          },
+          "502": {
+            "$ref": "#/components/responses/502"
+          },
+          "504": {
+            "$ref": "#/components/responses/504"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "review": {
+        "type": "object",
+        "required": [
+          "reviewer",
+          "rating",
+          "comment"
+        ],
+        "properties": {
+          "reviewer": {
+            "type": "string",
+            "example": "Maria Ivanova"
+          },
+          "rating": {
+            "type": "number",
+            "example": 5
+          },
+          "comment": {
+            "type": "string",
+            "example": "Very good nanny, my child loved her"
+          }
+        }
+      },
+      "nanny": {
+        "type": "object",
+        "required": [
+          "name",
+          "avatar_url",
+          "birthday",
+          "experience",
+          "reviews",
+          "education",
+          "kids_age",
+          "price_per_hour",
+          "location",
+          "about",
+          "characters",
+          "rating"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Nanny ID",
+            "example": "64f1c9b3e8a9c123456789ab"
+          },
+          "name": {
+            "type": "string",
+            "example": "Anna Kovalenko"
+          },
+          "avatar_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://example.com/avatar.jpg"
+          },
+          "birthday": {
+            "type": "string",
+            "format": "date",
+            "example": "1990-05-12"
+          },
+          "experience": {
+            "type": "string",
+            "example": "5 years working with children from 1 to 10 years old"
+          },
+          "reviews": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/review"
+            }
+          },
+          "education": {
+            "type": "string",
+            "example": "Pedagogical University, Child Psychology"
+          },
+          "kids_age": {
+            "type": "string",
+            "example": "1-3, 4-6"
+          },
+          "price_per_hour": {
+            "type": "number",
+            "example": 15
+          },
+          "location": {
+            "type": "string",
+            "example": "Kyiv"
+          },
+          "about": {
+            "type": "string",
+            "example": "I am a caring and responsible nanny who loves children."
+          },
+          "characters": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "kind",
+              "patient",
+              "responsible"
+            ]
+          },
+          "rating": {
+            "type": "number",
+            "example": 4.8
+          },
+          "parentId": {
+            "type": "string",
+            "description": "User ID who created nanny profile",
+            "example": "64f1c9b3e8a9c123456789ff"
+          },
+          "photo": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://example.com/photo.jpg"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-01-15T10:30:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-01-16T12:00:00Z"
+          }
+        }
+      },
+      "sessions": {
+        "type": "object",
+        "required": [
+          "userId",
+          "accessToken",
+          "refreshToken",
+          "accessTokenValidUntil",
+          "refreshTokenValidUntil"
+        ],
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "65a1f2e9c8b4a6f123456789"
+          },
+          "userId": {
+            "type": "string",
+            "description": "ID of the user",
+            "example": "6952b73f8fb84a3956fd7f82"
+          },
+          "accessToken": {
+            "type": "string",
+            "example": "OK3sYhfsV1Z2hsrbnGMHuYgaOcjkB5aXhZtN9oDk"
+          },
+          "refreshToken": {
+            "type": "string",
+            "example": "JHdk82ksjDks92jdks92jdks"
+          },
+          "accessTokenValidUntil": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-01-17T18:45:00.000Z"
+          },
+          "refreshTokenValidUntil": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-01-18T18:30:00.000Z"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-01-17T18:30:00.000Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-01-17T18:30:00.000Z"
+          }
+        }
+      },
+      "user": {
+        "type": "object",
+        "required": [
+          "_id",
+          "name",
+          "email",
+          "role"
+        ],
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "6952b73f8fb84a3956fd7f82"
+          },
+          "name": {
+            "type": "string",
+            "example": "Oksana 123"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "oksana@gmail.com"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "nanny",
+              "parent"
+            ],
+            "example": "parent"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-12-29T17:15:43.574Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-12-29T17:15:43.574Z"
+          }
+        }
+      }
+    },
+    "responses": {
+      "400": {
+        "ErrorResponse": {
+          "type": "object",
+          "required": [
+            "status",
+            "message"
+          ],
+          "properties": {
+            "status": {
+              "type": "integer",
+              "example": 400
+            },
+            "message": {
+              "type": "string",
+              "example": "Validation error"
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "Unauthorized error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 401
+                },
+                "message": {
+                  "type": "string",
+                  "example": "UnauthorizedError"
+                },
+                "data": {
+                  "type": "object",
+                  "required": [
+                    "message"
+                  ],
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Access token expired"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Forbidden - You do not have permission to access this resource.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 403
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Forbidden"
+                },
+                "error": {
+                  "type": "string",
+                  "example": "Insufficient permissions"
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Not Found error",
+        "content": null,
+        "application/json": null,
+        "schema": null,
+        "type": "object",
+        "required": [
+          "name",
+          "phoneNumber",
+          "contactType",
+          "userId"
+        ],
+        "properties": {
+          "status": {
+            "type": "integer",
+            "example": 404
+          },
+          "message": {
+            "type": "string",
+            "example": "Resource not found"
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "message"
+            ],
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Resource not found"
+              }
+            }
+          }
+        }
+      },
+      "422": {
+        "description": "Unprocessable Entity - The request was well-formed but contains semantic errors.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 422
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Validation failed"
+                },
+                "error": {
+                  "type": "string",
+                  "example": "Invalid date format for birthday"
+                }
+              }
+            }
+          }
+        }
+      },
+      "429": {
+        "description": "Too many requests",
+        "headers": {
+          "Retry-After": {
+            "description": "Number of seconds to wait before retrying",
+            "schema": {
+              "type": "integer",
+              "example": 900
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 429
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Too Many Requests"
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Internal Server Error",
+        "content": null,
+        "application/json": null,
+        "schema": null,
+        "type": "object",
+        "required": [
+          "status",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "status": {
+            "type": "integer",
+            "example": 500
+          },
+          "message": {
+            "type": "string",
+            "example": "InternalServerError"
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "message"
+            ],
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Something went wrong"
+              }
+            }
+          }
+        }
+      },
+      "502": {
+        "description": "Bad Gateway - The server received an invalid response from an upstream server.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 502
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Bad Gateway"
+                },
+                "error": {
+                  "type": "string",
+                  "example": "Upstream service error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "504": {
+        "description": "Gateway Timeout - The server did not receive a timely response from an upstream server.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 504
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Gateway Timeout"
+                },
+                "error": {
+                  "type": "string",
+                  "example": "Upstream service timeout"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

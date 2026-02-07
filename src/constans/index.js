@@ -33,3 +33,6 @@ export const CLOUDINARY = {
 
 export const LOGIN_ATTEMPT_THRESHOLD = 5;
 export const ACCOUNT_LOCK_TIME_MS = 60 * 60 * 1000; // 1 год
+
+
+export const SWAGGER_PATH = path.join(process.cwd(), 'docs', 'swagger.json');

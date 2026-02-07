@@ -61,7 +61,7 @@ export const rateLimitMiddleware = (limiter, getKey = (req) => req.ip) => {
       // rlRejected.msBeforeNext дає час до розблокування
       const retryAfter = Math.ceil((rlRejected.msBeforeNext || 0) / 1000);
       res.setHeader('Retry-After', String(retryAfter));
-      return next(createHttpError(429, 'Too Many Requests'));
+      return next(createHttpError(429, 'Too many requests. Please try again later.'));
     }
   };
 };

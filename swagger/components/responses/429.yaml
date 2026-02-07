@@ -1,0 +1,18 @@
+description: Too many requests
+headers:
+  Retry-After:
+    description: Number of seconds to wait before retrying
+    schema:
+      type: integer
+      example: 900
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 429
+        message:
+          type: string
+          example: Too Many Requests
