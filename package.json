@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "buffer": "^6.0.3",
     "cloudinary": "^2.8.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -45,15 +46,22 @@
     "google-auth-library": "^10.5.0",
     "handlebars": "^4.7.8",
     "http-errors": "^2.0.1",
+    "https-browserify": "^1.0.0",
     "ioredis": "^5.9.2",
     "joi": "^18.0.2",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^8.19.4",
     "multer": "^2.0.2",
     "nodemailer": "^7.0.12",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
     "pino-http": "^11.0.0",
+    "querystring-es3": "^0.2.1",
     "rate-limiter-flexible": "^9.0.1",
+    "stream-http": "^3.2.0",
     "swagger-ui-express": "^5.0.1",
+    "url": "^0.11.4",
+    "util": "^0.12.5",
     "webpack-cli": "^6.0.1"
   }
 }
