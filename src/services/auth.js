@@ -12,17 +12,19 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 import { getFullNameFromGoogleTokenPayload, validateCode } from '../utils/googleOAuth2.js';
 
+
 export const registerUser = async (payload) => {
   const user = await UsersCollection.findOne({ email: payload.email });
   if (user) throw createHttpError(409, 'Email in use');
 
   const encryptedPassword = await bcrypt.hash(payload.password, 10);
-
   return await UsersCollection.create({
     ...payload,
     password: encryptedPassword,
+
   });
 };
+
 
 export const loginUser = async (payload) => {
   const user = await UsersCollection.findOne({ email: payload.email });
@@ -68,13 +70,26 @@ export const loginUser = async (payload) => {
   const accessToken = randomBytes(30).toString('base64');
   const refreshToken = randomBytes(30).toString('base64');
 
-  return await SessionsCollection.create({
+    const session = await SessionsCollection.create({
     userId: user._id,
     accessToken,
     refreshToken,
     accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
     refreshTokenValidUntil: new Date(Date.now() + ONE_DAY),
   });
+
+  // ✅ ПОВЕРТАЄМО user + session
+   return {
+    sessionId: session._id,        // ✅ для cookie
+    accessToken: session.accessToken,
+    refreshToken: session.refreshToken,
+    user: {                        // ✅ user об'єкт з _id
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role || 'parent'
+    }
+  };
 };
 
 
@@ -112,14 +127,21 @@ export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
     throw createHttpError(401, 'Session token expired');
   }
 
-  const newSession = createSession();
-
-  await SessionsCollection.deleteOne({ _id: sessionId, refreshToken });
-
-  return await SessionsCollection.create({
+   const newSession = createSession();
+  const updatedSession = await SessionsCollection.create({
     userId: session.userId,
     ...newSession,
   });
+
+  // ✅ Знаходимо user
+  const user = await UsersCollection.findById(session.userId).select('_id name email role');
+
+  return {
+  _id: updatedSession._id, // ✅ ДОДАЙ
+  user,
+  accessToken: updatedSession.accessToken,
+  refreshToken: updatedSession.refreshToken
+};
 };
 
 
@@ -207,10 +229,20 @@ export const loginOrSignupWithGoogle = async (code) => {
     });
   }
 
-  const newSession = createSession();
-
-  return await SessionsCollection.create({
+   const newSession = createSession();
+  const session = await SessionsCollection.create({
     userId: user._id,
     ...newSession,
   });
+
+  return {
+    user: {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role
+    },
+    accessToken: session.accessToken,
+    refreshToken: session.refreshToken
+  };
 };

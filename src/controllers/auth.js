@@ -5,33 +5,50 @@ import { loginOrSignupWithGoogle, loginUser, logoutUser, refreshUsersSession, re
 import { generateAuthUrl } from '../utils/googleOAuth2.js';
 
 export const registerUserController = async (req, res) => {
-  const user = await registerUser(req.body);
+  await registerUser(req.body);
+
+  // 👇 одразу логінимо
+  const result = await loginUser(req.body);
+
+  res.cookie('refreshToken', result.refreshToken, {
+    httpOnly: true,
+    expires: new Date(Date.now() + ONE_DAY),
+  });
+
+  res.cookie('sessionId', result._id, {
+    httpOnly: true,
+    expires: new Date(Date.now() + ONE_DAY),
+  });
 
   res.status(201).json({
     status: 201,
-    message: 'Successfully registered a user!',
-    data: user,
+    message: 'Successfully registered!',
+    data: {
+      accessToken: result.accessToken,
+      user: result.user,
+    },
   });
 };
 
-
 export const loginUserController = async (req, res) => {
-  const session = await loginUser(req.body);
+  const result = await loginUser(req.body); // ✅ Тепер повертає {user, accessToken, refreshToken}
 
-  res.cookie('refreshToken', session.refreshToken, {
+  res.cookie('refreshToken', result.refreshToken, {
     httpOnly: true,
     expires: new Date(Date.now() + ONE_DAY),
   });
-  res.cookie('sessionId', session._id, {
+  res.cookie('sessionId', result.sessionId || result._id, {  // ✅ sessionId
     httpOnly: true,
     expires: new Date(Date.now() + ONE_DAY),
   });
 
+  // ✅ ПОВЕРТАЄМО user + accessToken
   res.json({
     status: 200,
-    message: 'Successfully logged in an user!',
+    message: 'Successfully logged in!',
     data: {
-      accessToken: session.accessToken,
+      accessToken: result.accessToken,
+      user: result.user  // ✅ ОТ ЦЕЙ!
     },
   });
 };
@@ -68,12 +85,13 @@ export const refreshUserSessionController = async (req, res) => {
   setupSession(res, session);
 
   res.json({
-    status: 200,
-    message: 'Successfully refreshed a session!',
-    data: {
-      accessToken: session.accessToken,
-    },
-  });
+  status: 200,
+  message: 'Successfully refreshed a session!',
+  data: {
+    accessToken: session.accessToken,
+    user: session.user, // ✅ ВАЖЛИВО
+  },
+});
 };
 
 
@@ -118,6 +136,7 @@ export const loginWithGoogleController = async (req, res) => {
     message: 'Successfully logged in via Google OAuth!',
     data: {
       accessToken: session.accessToken,
+      user: session.user, // ✅ ДОДАТИ
     },
   });
 };

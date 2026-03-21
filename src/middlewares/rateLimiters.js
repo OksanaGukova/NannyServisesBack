@@ -26,7 +26,7 @@ export const apiRateLimiter = new RateLimiterRedis({
 // Ліміт для спроб логіну (пер IP)
 export const loginIpLimiter = new RateLimiterRedis({
   storeClient: redis,
-  points: 10, // 10 спроб за 15 хв з одного IP
+  points: 100, // 10 спроб за 15 хв з одного IP
   duration: 15 * 60,
   blockDuration: 60 * 60, // блокуємо IP на 1 год
   keyPrefix: 'rl_login_ip',
