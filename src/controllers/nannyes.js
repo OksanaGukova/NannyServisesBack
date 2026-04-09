@@ -48,16 +48,28 @@ export const getNannyesController = async (req, res, next) => {
 
 
 export const createNannyController = async (req, res) => {
- const nanny = await createNanny({
-    ...req.body,
-    parentId: req.user._id, // 🔥 ОЦЕ КЛЮЧ
-  });
+  try {
+    console.log("📥 RECEIVED DATA:", req.body);  // ✅ ЩО ПРИЙШЛО
+    console.log("👤 USER ID:", req.user?._id);   // ✅ ЧИ Є USER?
 
-  res.status(201).json({
-    status: 201,
-    message: `Successfully created a nanny!`,
-    data: nanny,
-  });
+    const nanny = await createNanny({
+      ...req.body,
+      parentId: req.user._id,
+    });
+
+    res.status(201).json({
+      status: 201,
+      message: `Successfully created a nanny!`,
+      data: nanny,
+    });
+  } catch (error) {
+  
+    res.status(400).json({
+      status: 400,
+      message: error.message || 'Bad Request',
+      errors: error.errors  // ✅ ДЕТАЛІ ПОМИЛКИ
+    });
+  }
 };
 
 export const DeleteNannyController = async (req, res, next) => {

@@ -69,8 +69,18 @@ export const getNannyById = async (nannyId) => {
 };
 
 export const createNanny = async (payload) => {
-const nanny = await NannyesCollection.create(payload);
-return nanny;
+  try {
+    console.log("🔄 CREATE NANNY WITH:", payload);  // ✅ ЩО ПЕРЕДАЄМО
+
+    const nanny = await NannyesCollection.create(payload);
+
+    console.log("✅ NANNY CREATED:", nanny);
+    return nanny;
+  } catch (error) {
+    console.error("❌ SCHEMA VALIDATION ERROR:", error.message);
+    console.error("❌ DETAILS:", error.errors);
+    throw error;
+  }
 };
 
 export const deleteNanny = async (nannyId) => {

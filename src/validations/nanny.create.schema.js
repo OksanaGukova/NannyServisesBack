@@ -12,7 +12,7 @@ export const createNannySchema = Joi.object({
 
   experience: Joi.string().required(), // можна зробити regex якщо треба
 
-  reviews: Joi.array().items(reviewJoiSchema).min(1).required(),
+  reviews: Joi.array().items(reviewJoiSchema).min(1),
 
   education: Joi.string().min(3).max(100).required(),
 
@@ -26,7 +26,7 @@ export const createNannySchema = Joi.object({
 
   characters: Joi.array().items(Joi.string()).min(1).required(),
 
-  rating: Joi.number().min(1).max(5).required(),
+  rating: Joi.number().min(1).max(5),
 
     parentId: Joi.string().custom((value, helper) => {
 		    if (value && !isValidObjectId(value)) {

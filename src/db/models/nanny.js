@@ -3,15 +3,15 @@ import {model, Schema } from 'mongoose';
 const reviewSchema = new Schema({
   reviewer: {
     type: String,
-    required: true,
+    default: [],
   },
   rating: {
     type: Number,
-    required: true,
+    default: 1,
   },
   comment: {
     type: String,
-    required: true,
+   default: [],
   }
 });
 
@@ -35,7 +35,7 @@ const nannyesSchema = new Schema(
     },
     reviews: {
          type: [reviewSchema],
-      required: true,
+      default: [],
     },
     education: {
           type: String,
@@ -59,11 +59,11 @@ const nannyesSchema = new Schema(
     },
     characters: {
        type: [String],
-  required: true,
+   default: [],
     },
     rating: {
       type: Number,
-      required: true,
+       default: 1,
     },
       parentId: {
       type: Schema.Types.ObjectId,
