@@ -63,7 +63,7 @@ export const createNannyController = async (req, res) => {
       data: nanny,
     });
   } catch (error) {
-  
+
     res.status(400).json({
       status: 400,
       message: error.message || 'Bad Request',

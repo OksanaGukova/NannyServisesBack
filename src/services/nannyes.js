@@ -5,9 +5,9 @@ import { calculatePaginationData } from "../utils/calculatePaginationData.js";
 
 export const getAllNannyes = async ({
   page = 1,
-  perPage = 10,
-  sortBy = '_id',
-  sortOrder = SORT_ORDER.ASC,
+  perPage = 100,
+   sortBy = 'createdAt',
+  sortOrder = SORT_ORDER.DESC,
   filter = {},
 }) => {
   const limit = perPage;
