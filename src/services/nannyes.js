@@ -4,8 +4,8 @@ import { NannyesCollection } from "../db/models/nanny.js";
 import { calculatePaginationData } from "../utils/calculatePaginationData.js";
 
 export const getAllNannyes = async ({
-  page = 1,
-  perPage = 100,
+  page,
+  perPage,
    sortBy = 'createdAt',
   sortOrder = SORT_ORDER.DESC,
   filter = {},
