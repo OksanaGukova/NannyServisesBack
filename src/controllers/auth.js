@@ -1,5 +1,6 @@
 
 
+import createHttpError from 'http-errors';
 import { ONE_DAY } from '../constans/index.js';
 import { loginOrSignupWithGoogle, loginUser, logoutUser, refreshUsersSession, registerUser, requestResetToken, resetPassword } from '../services/auth.js';
 import { generateAuthUrl } from '../utils/googleOAuth2.js';
@@ -116,27 +117,73 @@ export const resetPasswordController = async (req, res) => {
 
 
 export const getGoogleOAuthUrlController = async (req, res) => {
-  const url = generateAuthUrl();
-  res.json({
-    status: 200,
-    message: 'Successfully get Google OAuth url!',
-    data: {
-      url,
-    },
-  });
+  try {
+    console.log('🔍 GET OAUTH URL called');
+
+    const url = generateAuthUrl();
+
+    console.log('✅ Generated URL:', url);
+
+    res.json({
+      status: 200,
+      message: 'Successfully get Google OAuth url!',
+      data: {
+        url,
+      },
+    });
+  } catch (error) {
+    console.error('❌ Error:', error);
+    res.status(500).json({
+      status: 500,
+      message: error.message,
+    });
+  }
 };
 
 
-export const loginWithGoogleController = async (req, res) => {
-  const session = await loginOrSignupWithGoogle(req.body.code);
-  setupSession(res, session);
+export const loginWithGoogleController = async (req, res, next) => {
+  try {
+        console.log('🔍 Full URL:', req.originalUrl);
+    console.log('📥 Query params:', req.query);
+    console.log('📥 Code:', req.query.code);
+    const { code } = req.query;
+  if (!code) {
+      console.error('❌ NO CODE PROVIDED');
+      console.log('Available params:', Object.keys(req.query));
+      throw createHttpError(400, 'No authorization code provided');
+    }
 
-  res.json({
-    status: 200,
-    message: 'Successfully logged in via Google OAuth!',
-    data: {
-      accessToken: session.accessToken,
-      user: session.user, // ✅ ДОДАТИ
-    },
-  });
+    const session = await loginOrSignupWithGoogle(code);
+    setupSession(res, session);
+
+    // ✅ Повертаємо HTML сторінку що закриває окно та передає токен
+    const html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Authenticating...</title>
+        </head>
+        <body>
+          <script>
+            const data = {
+              accessToken: '${session.accessToken}',
+              user: ${JSON.stringify(session.user)}
+            };
+
+            // ✅ Передаємо дані в localStorage
+            localStorage.setItem('authData', JSON.stringify(data));
+            localStorage.setItem('token', '${session.accessToken}');
+
+            // ✅ Закриваємо вікно або перенаправляємо
+            window.location.href = '${process.env.FRONTEND_URL || 'http://localhost:5173'}/nannies';
+          </script>
+        </body>
+      </html>
+    `;
+
+    res.send(html);
+    } catch (error) {
+    console.error('❌ Error:', error.message);
+    next(error);
+  }
 };
