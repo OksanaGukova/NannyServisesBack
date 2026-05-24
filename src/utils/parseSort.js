@@ -39,6 +39,6 @@ export const parseSortParams = (query) => {
       result.sortOrder = 'desc';
       break;
   }
-
+ console.log('🔍 SORT PARAMS:', { sort, result }); 
   return result;
 };

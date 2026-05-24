@@ -8,24 +8,34 @@ import { getEnvVar } from "../utils/getEnvVar.js";
 import { saveFileToCloudinary } from "../utils/saveFileToCloudinary.js";
 
 export const getNannyesController = async (req, res, next) => {
+  try {
+    console.log('🔍 RAW QUERY:', req.query); // ✅ DEBUG
 
     const { page, perPage } = parsePaginationParam(req.query);
-  const { sortBy, sortOrder } = parseSortParams(req.query);
-  const filter = parseFilterParams(req.query);
+    const { sortBy, sortOrder } = parseSortParams(req.query);
+    const filter = parseFilterParams(req.query);
+
+    console.log('📥 PARSED:', { page, perPage, sortBy, sortOrder, filter }); // ✅ DEBUG
 
     const nannyes = await getAllNannyes({
-    page,
-    perPage,
-    sortBy,
-    sortOrder,
-    filter,
-  });
+      page,
+      perPage,
+      sortBy,
+      sortOrder,
+      filter,
+    });
 
-      res.json({
-    status: 200,
-    message: 'Successfully found nannyes!',
-    data: nannyes,
-  });
+    console.log('✅ RESULT:', nannyes); // ✅ DEBUG
+
+    res.json({
+      status: 200,
+      message: 'Successfully found nannyes!',
+      data: nannyes,
+    });
+  } catch (error) {
+    console.error('❌ ERROR:', error); // ✅ DEBUG
+    next(error);
+  }
 };
 
 

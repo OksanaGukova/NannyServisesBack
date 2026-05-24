@@ -45,10 +45,15 @@ export const getAllNannyes = async ({
 
   const totalItems = await NannyesCollection.countDocuments(mongoFilter);
 
+    const sortOrderValue = sortOrder === 'asc' ? 1 : -1;
+
+  console.log('🔧 MONGO SORT:', { [sortBy]: sortOrderValue }); // ✅ DEBUG
+
   const items = await NannyesCollection.find(mongoFilter)
+   .collation({ locale: 'en', strength: 2 })
     .skip(skip)
     .limit(limit)
-    .sort({ [sortBy]: sortOrder })
+   .sort({ [sortBy]: sortOrderValue })
     .exec();
 
   const paginationData = calculatePaginationData(
