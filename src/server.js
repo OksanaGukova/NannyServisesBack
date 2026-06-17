@@ -26,7 +26,13 @@ app.use(cors({
 }));
 
 // 🔥 ВАЖЛИВО: preflight ДО всіх роутів
-app.options("*", cors());
+app.options("*", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "https://nanny-services-ivory.vercel.app");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  return res.sendStatus(204);
+});
 
 app.use(express.json());
 app.use(cookieParser());
