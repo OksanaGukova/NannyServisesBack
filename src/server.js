@@ -3,7 +3,7 @@
 import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
-import { getEnvVar } from './utils/getEnvVar.js';
+
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import router from './routers/index.js';
@@ -13,39 +13,34 @@ import { swaggerDocs } from './middlewares/swaggerDocs.js';
 
 
 
-const PORT = Number(getEnvVar('PORT', '3000'));
 
 export const startServer = () => {
   const app = express();
 
-  app.use(express.json());
- app.use(cors({
+
+app.use(cors({
   origin: "https://nanny-services-ivory.vercel.app",
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 }));
-app.options("*", cors());
-  app.use(cookieParser());
-  app.use('/uploads', express.static(UPLOAD_DIR));
-  app.use('/api-docs', swaggerDocs());
 
-  app.use(
-    pino({
-      transport: {
-        target: 'pino-pretty',
-      },
-    }),
-  );
+// 🔥 ВАЖЛИВО: preflight ДО всіх роутів
+app.options("*", cors());
+
+app.use(express.json());
+app.use(cookieParser());
+
+app.use('/uploads', express.static(UPLOAD_DIR));
+app.use('/api-docs', swaggerDocs());
+
+app.use(pino({
+  transport: { target: 'pino-pretty' },
+}));
 
 app.use(router);
 
-     app.use(notFoundHandler);
-
-  app.use(errorHandler);
-
-   app.use('/uploads', express.static(UPLOAD_DIR));
-
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
+// error handlers В КІНЦІ
+app.use(notFoundHandler);
+app.use(errorHandler);
 };
