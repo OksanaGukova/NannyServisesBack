@@ -19,7 +19,11 @@ export const startServer = () => {
   const app = express();
 
   app.use(express.json());
-  app.use(cors());
+ app.use(cors({
+  origin: "https://nanny-services-ivory.vercel.app",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+}));
   app.use(cookieParser());
   app.use('/uploads', express.static(UPLOAD_DIR));
   app.use('/api-docs', swaggerDocs());
