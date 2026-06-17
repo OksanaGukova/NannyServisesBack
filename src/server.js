@@ -24,6 +24,7 @@ export const startServer = () => {
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 }));
+app.options("*", cors());
   app.use(cookieParser());
   app.use('/uploads', express.static(UPLOAD_DIR));
   app.use('/api-docs', swaggerDocs());
