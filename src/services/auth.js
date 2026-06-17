@@ -185,31 +185,28 @@ export const requestResetToken = async (email) => {
 };
 
 
-export const resetPassword = async (payload) => {
-  let entries;
-
-  try {
-    entries = jwt.verify(payload.token, getEnvVar('JWT_SECRET'));
-  } catch (err) {
-    if (err instanceof Error) throw createHttpError(401, err.message);
-    throw err;
-  }
-
-  const user = await UsersCollection.findOne({
-    email: entries.email,
-    _id: entries.sub,
-  });
+export const resetPassword = async (email) => {
+  const user = await UsersCollection.findOne({ email });
 
   if (!user) {
-    throw createHttpError(404, 'User not found');
+    throw createHttpError(404, "User not found");
   }
 
-  const encryptedPassword = await bcrypt.hash(payload.password, 10);
-
-  await UsersCollection.updateOne(
-    { _id: user._id },
-    { password: encryptedPassword },
+  const token = jwt.sign(
+    { sub: user._id, email: user.email },
+    process.env.JWT_SECRET,
+    { expiresIn: "15m" }
   );
+
+  const resetLink = `https://your-frontend.com/reset-password?token=${token}`;
+
+  await sendEmail({
+    to: email,
+    subject: "Reset your password",
+    html: `<a href="${resetLink}">Reset password</a>`,
+  });
+
+  return { message: "Reset email sent" };
 };
 
 
