@@ -16,16 +16,8 @@ import { swaggerDocs } from './middlewares/swaggerDocs.js';
 
 export const startServer = () => {
   const app = express();
-  
-  const corsOptions = {
-    origin: "https://nanny-services-ivory.vercel.app",
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    optionsSuccessStatus: 200
-  };
 
-  app.use(cors(corsOptions));
+app.use(cors);
 
 app.use(express.json());
 app.use(cookieParser());
